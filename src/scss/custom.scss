@@ -1,0 +1,16 @@
+// Your custom variables
+$body-bg: #f3f3f9;
+$body-color: #333333;
+$primary: #391e5a; // Primary button color
+$font-family-base: "Nunito Sans";
+
+// Import Bootstrap’s source Sass files
+@import "node_modules/bootstrap/scss/bootstrap";
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+
+// Optional Bootstrap components here
+@import "../node_modules/bootstrap/scss/root";
+@import "../node_modules/bootstrap/scss/reboot";
+@import "../node_modules/bootstrap/scss/type";

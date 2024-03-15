@@ -1,3 +1,7 @@
 # https://www.robotstxt.org/robotstxt.html
 User-agent: *
 Disallow:
+
+
+<Col md={{ span: 4, offset: 4 }} > <Button type="submit" className="ml-10" style=
+          {{marginLeft:'80%'}}   >Add</Button></Col>
