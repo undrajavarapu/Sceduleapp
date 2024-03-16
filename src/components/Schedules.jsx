@@ -12,6 +12,7 @@ import { IoIosAddCircleOutline } from "react-icons/io";
 import Modal from 'react-bootstrap/Modal';
 import TimeDropdown from './TimeDropdown';
 import Container from 'react-bootstrap/Container';
+import ListDate from './ListDate';
 
 function Schedules() {
   const [count,setCount]=useState(0)
@@ -181,6 +182,9 @@ const handleTimeReceive = (time) => {
   
   console.log("Selected Time:", time); 
 };
+const handleDateReceive =(repeat)=>{
+  setData({ ...state, repeat:(repeat )})
+}
 const handleSubmit=(e)=>{
     //setname(e.target.value)
    // debugger
@@ -219,100 +223,140 @@ console.log(k);
 }
 const [type,setType]=useState(0)
 
+document.querySelectorAll('.day-option').forEach(item => {
+  item.addEventListener('click', function() {
+    // Remove 'selected' class from all options
+    document.querySelectorAll('.day-option').forEach(div => {
+      div.classList.remove('selected');
+    });
+    // Add 'selected' class to clicked option
+    this.classList.add('selected');
+    // Update hidden input value
+    document.getElementById('selectedDay').value = this.getAttribute('data-value');
+  });
+});
+
+
   return (
   
 <div className="container" style={{marginLeft:'5%',marginTop:'2%'}}>
 
-<Modal show={show} type={type} onHide={handleClose} backdrop={false} style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-18%, -50%)'}}>
+<Modal className=" modal-sm" show={show} type={type} onHide={handleClose} backdrop={false} style={{position: 'absolute', top: '50%', left: '50%', transform: 'translate(-18%, -50%)'}}>
   
-        <h5>Add Schedule</h5>
+
         <Modal.Body>
+        Add Schedule
           <Container>
 
-        <form onSubmit={handleSubmit}>
-
-        <Row>
-        <Col xs={4}>title:</Col>
-        <Col xs={8} mb-1><input  type='text' onChange={handleChange} name='title' value={state.title}/></Col>
-        
-        </Row>
-        <Row>
-        <Col xs={4}>description:</Col>
-        <Col mb-1><textarea onChange={handleChange} name='description' value={state.description}/></Col>
-        
-        </Row>
-        <Row>
-        <Col xs={4}>subject:</Col>
-        <Col xs={8} mb-1><input type='text' onChange={handleChange} name='subject' value={state.subject}/></Col>
-        
-        </Row>
-        <Row>
-        <Col xs={4}>Frequency:</Col>
-        <Col xs={8} mb-1>
-        <label Htmlfor="frequency" class="form-label" onChange={handlefreqChange} value={state.frequency}>
+        <form onSubmit={handleSubmit} className="compact-form">
+        <div className="d-flex justify-content-center">
+            <label for="title" className="col-form-label col-4">Title:</label>
+            <div className="col-8">
+            <input type="text"  onChange={handleChange} name="title" value={state.title} />
+            </div>
+          </div>
+          <div className="d-flex justify-content-center">
+            <label for="description" className="ol-form-label col-4">Description:</label>
+            <div className="col-8">
+            <textarea onChange={handleChange}  name="description" value={state.description} />
+            </div>
+          </div>
+          <div className="d-flex justify-content-center">
+            <label for="subject" className="col-form-label col-4">Subject:</label>
+            <div className="col-8">
+            <input type="text" onChange={handleChange}  name="subject" value={state.subject} />
+            </div>
+          </div>
+          <div className="d-flex justify-content-center">
+            <label for="frequency" className="col-form-label col-4">Frequency:</label>
+            <div className="col-8">
+            <label  Htmlfor="frequency" className="form-label" onChange={handlefreqChange} value={state.frequency}>
           
-          <select name="frequency">
+          <select className="dropdown" name="frequency">
+          <option disabled="disabled">----</option>
         <option value="Monthly">Monthly</option>
         <option value="Weekly">Weekly</option>
         <option value="Daily">Daily</option>
       </select>
       </label>
-          </Col>
-        
-        </Row>
-        <Row>
-        <Col xs={4}>Repeat:</Col>
-        <Col xs={8} mb-1>{state.frequency !== "Daily"&&(
-      <label Htmlfor="exampleFormControlInput1" class="form-label" onChange={handlerepeatChange} value={state.repeat}>
-      <select name="repeat">
-      {state.frequency === "Monthly" && (
-          <><option key="first monday">first monday</option><option key="last friday">last friday</option></>
+            </div>
+          </div>
+
+          <div className="d-flex justify-content-center">
+          {state.frequency !== "Daily" && (<label for="frequency"  className="col-form-label col-4 ">Repeat:</label>)}
+            <div className="col-8 " style={{ width: '200px', height: '40px' }} >
+            {state.frequency !== "Daily" && (
+          <label htmlFor="exampleFormControlInput1" className="form-label col-4 ">
+            
+              {state.frequency === "Monthly" && (
+                <select className="form-control  col-8"  name="repeat" onChange={handlerepeatChange} value={state.repeat}>
+                <>
+                <option disabled="disabled">----</option>
+                  <option key="first monday">first monday</option>
+                  <option key="last friday">last friday</option>
+                </>
+                </select>
+              )}
+              {state.frequency === "Weekly" && (
+                <div className="col-8" ><ListDate  onDateReceive={handleDateReceive} /></div>
+                // <>
+                //   <option key="Monday" value="Monday">M</option>
+                //   <option key="Tuesday" value="Tuesday">T</option>
+                //   <option key="Wednesday" value="Wednesday">W</option>
+                //   <option key="Thursday" value="Thursday">T</option>
+                //   <option key="Friday" value="Friday">F</option>
+                //   <option key="Saturday" value="Saturday">S</option>
+                //   <option key="Sunday" value="Sunday">Su</option>
+                // </>
+//                 <>
+//                 <div id="dayPicker">
+//   <div className="day-option" data-value="Monday">M</div>
+//   <div className="day-option" data-value="Tuesday">T</div>
+//   <div className="day-option" data-value="Wednesday">W</div>
+//   <div className="day-option" data-value="Thursday">T</div>
+//   <div className="day-option" data-value="Friday">F</div>
+//   <div className="day-option" data-value="Saturday">S</div>
+//   <div className="day-option" data-value="Sunday">Su</div>
+// </div>
+// <input type="hidden" id="selectedDay" name="selectedDay"/>
+
+//                 </>
+              )}
+           
+          </label>
         )}
-        {state.frequency === "Weekly" && (
-          <><option key="Monday" value="Monday">M</option><option key="Tuesday"
-          value="Tuesday">T</option><option key="Wednesday"
-          value="Wednesday">W</option><option key="Thursday"
-          value="Thursday">T</option>
-          <option key="Friday"
-          value="Friday">F</option><option key="Saturday"
-          value="Saturday">S</option><option key="Sunday"
-          value="Sunday">Su</option></>
-        )}
-        
-      </select></label>)}</Col>
-        
-        </Row>
-        
-        
-        <Row>
-        <Col xs={4}><label Htmlfor="currenttime" class="form-label"  value={state.time}>time</label></Col>
-        <Col xs={8} mb-1><TimeDropdown onDataReceive={handleTimeReceive} /></Col>
-        
-        </Row>
-      
-      
-  
-  
+            </div>
+          </div>
+
+          <div className="d-flex justify-content-center">
+            <label for="currenttime" className="col-form-label col-4">Time:</label>
+            <div className="col-8">
+                
+            <TimeDropdown onDataReceive={handleTimeReceive} />
+           
+            </div>
+          </div> 
   {/* <p>Selected time: {selectedTime}</p> */}
         {/* <button type='submit'>submit</button> */}
 
         
     </form>
-    <div class="col col-lg-12" style={{marginLeft:"45%"}}>
-    <Button className="m-3 " variant="secondary" onClick={handleClose} >
-            Cancel
-          </Button>
-          <Button className="m-3" onClick={handleSubmit}>
-            Done
-          </Button>
-    </div>
+    
     
     </Container>
         
         </Modal.Body>
-        {/* <Modal.Footer>
-          
-        </Modal.Footer> */}
+        
+        <div className="d-flex justify-content-end">
+    <Button className="m-2" variant="secondary" onClick={handleClose}>
+        Cancel
+    </Button>
+    <Button className="m-2" onClick={handleSubmit}>
+        Done
+    </Button>
+</div>
+
+        
       </Modal>
  {/* <Modalv 
  shouldShow={showModal}
